@@ -11,6 +11,22 @@ class Calendar {
 
     build() {
 
+        if (arguments[0] === 'left') {
+            this.mon = this.mon - 1;
+            if (this.mon < 0) {
+                this.year = this.year - 1;
+                this.mon = 11;
+            }
+            this.d = new Date(this.year, this.mon);
+        } else if (arguments[0] === 'right') {
+            this.mon = this.mon + 1;
+            if (this.mon > 11) {
+                this.year = this.year + 1;
+                this.mon = 0;
+            }
+            this.d = new Date(this.year, this.mon);
+        }
+
         let table = '<table><tr><th>MO</th><th>TU</th><th>WE</th><th>TH</th><th>FR</th><th>SA</th><th>SU</th></tr><tr>';
 
         // spaces for the first row
@@ -63,6 +79,8 @@ class Calendar {
         this.elem.appendChild(nav);
         this.elem.appendChild(cal);
 
+        //*****Events block */
+
         cal.firstChild.addEventListener('mousedown', function(event) {
             let target = event.target;
 
@@ -73,18 +91,20 @@ class Calendar {
             }
             document.getElementsByClassName('today')[0].style.background = 'red';
 
-            if (!target.classList.contains('unavailable')) {
+            if (!target.classList.contains('unavailable') && target.tagName !== 'TH') {
                 target.style.background = 'blue';
             }
         }, false);
 
-        // document.getElementsByClassName('btn-left')[0].addEventListener('click', function() {
-        //     calendar.build('left');
-        // }, false);
+        let that = this;
 
-        // document.getElementsByClassName('btn-right')[0].addEventListener('click', function() {
-        //     calendar.build('right');
-        // }, false);
+        document.getElementsByClassName('btn-left')[0].addEventListener('click', function() {
+            that.handleSlide('left');
+        }, false);
+
+        document.getElementsByClassName('btn-right')[0].addEventListener('click', function() {
+            that.handleSlide('right');
+        }, false);
     }
 
     getDay(date) { // get day number from 0 (monday) to 6 (sunday)
@@ -95,6 +115,14 @@ class Calendar {
         }
 
         return day - 1;
+    }
+
+    handleSlide(side) {
+        while (this.elem.firstChild) {
+            this.elem.removeChild(this.elem.firstChild);
+        }
+
+        this.build(side);
     }
 }
 
