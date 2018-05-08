@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td,
+th {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+th {
+    font-weight: bold;
+    background-color: #E6E6E6;
+}
+
+#root {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.today {
+    background: red;
+}
+
+.muted {
+    color: grey;
+}
+
+.nav {
+    background: blue;
+}
+
+.btn {
+    width: 40px;
+    cursor: pointer;
+}
+
+.btn-right {
+    float: right;
+}
+
+.current {
+    color: #fff;
+    margin-left: 25%;
+}
