@@ -5,6 +5,9 @@ class Calendar {
         this.year = this.date.getFullYear();
         this.mon = this.date.getMonth();
         this.d = new Date(this.year, this.mon);
+        this.today = document.getElementsByClassName('today')[0];
+        this.left = document.getElementsByClassName('btn-left')[0];
+        this.right = document.getElementsByClassName('btn-right')[0]
         this.prevMon = null; // previous month
         this.keeper = {};
     }
@@ -30,6 +33,10 @@ class Calendar {
             }
             this.d = new Date(this.year, this.mon);
         }
+
+        /**
+         * start table
+         */
 
         let table = '<table><tr><th>MO</th><th>TU</th><th>WE</th><th>TH</th><th>FR</th><th>SA</th><th>SU</th></tr><tr>';
 
@@ -76,7 +83,9 @@ class Calendar {
         table += '</tr></table>';
 
 
-        //build block ********************************************************************
+        /**
+         * Build DOM
+         */
 
         let nav = document.createElement('div');
         let cal = document.createElement('div');
@@ -90,13 +99,14 @@ class Calendar {
         this.elem.appendChild(cal);
 
         /**
-         * Keep swithed box
+         * Keep selected box
          */
 
         if (this.year == this.keeper.year && this.mon == this.keeper.mon) {
-            let td = document.getElementsByTagName('td');
+            let td = document.getElementsByTagName('td'),
+                length = td.length;
 
-            for (let i = 0; i < td.length; i++) {
+            for (let i = 0; i < length; i++) {
 
                 if (!td[i].classList.contains('ununavailable') && td[i].innerHTML.match(/\d+/)[0] == this.keeper.date) {
                     td[i].style.background = 'blue';
@@ -104,19 +114,25 @@ class Calendar {
             }
         }
 
-        //*****Events block */
+        //*****Events block ********************/
 
         let that = this;
+
+        /**
+         * selecting box
+         */
 
         cal.firstChild.addEventListener('mousedown', function(event) {
             let target = event.target;
 
-            let td = document.querySelectorAll('td');
+            let td = document.getElementsByTagName('td'),
+                length = td.length;
 
-            for (let i = 0; i < td.length; i++) {
+            for (let i = 0; i < length; i++) {
                 td[i].style.background = 'none';
             }
-            document.getElementsByClassName('today')[0].style.background = 'red';
+
+            this.today.style.background = 'red';
 
             if (!target.classList.contains('unavailable') && target.tagName !== 'TH') {
                 target.style.background = 'blue';
@@ -126,18 +142,24 @@ class Calendar {
                     'date': target.innerHTML.match(/\d+/)[0] // get only number from innerHTML
                 };
             }
+
         }, false);
 
-        document.getElementsByClassName('btn-left')[0].addEventListener('click', function() {
+        this.left.addEventListener('click', function() {
             that.handleSlide('left');
         }, false);
 
-        document.getElementsByClassName('btn-right')[0].addEventListener('click', function() {
+        this.right.addEventListener('click', function() {
             that.handleSlide('right');
         }, false);
     }
 
-    getDay(date) { // get day number from 0 (monday) to 6 (sunday)
+
+    /**
+     * get day number from 0 (monday) to 6 (sunday)
+     * @param {date} date
+     */
+    getDay(date) {
         let day = date.getDay();
 
         if (day == 0) {
@@ -147,6 +169,10 @@ class Calendar {
         return day - 1;
     }
 
+    /**
+     * rm all inside root element and call function that build calendar again
+     * @param {string} side
+     */
     handleSlide(side) {
         while (this.elem.firstChild) {
             this.elem.removeChild(this.elem.firstChild);
