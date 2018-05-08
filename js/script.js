@@ -7,7 +7,6 @@ class Calendar {
         this.d = new Date(this.year, this.mon);
         this.prevMon = null; // previous month
 
-        this.switchDay = this.switchDay.bind(this);
     }
 
     build() {
@@ -97,10 +96,6 @@ class Calendar {
 
         return day - 1;
     }
-
-    switchDay() {
-
-    }
 }
 
 const calendar = new Calendar('root');
@@ -122,4 +117,4 @@ calendar.build();
 //     if (!target.classList.contains('unavailable')) {
 //         target.style.background = 'blue';
 //     }
-// }, false);
+// }, false)
