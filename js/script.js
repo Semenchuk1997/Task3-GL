@@ -6,10 +6,14 @@ class Calendar {
         this.mon = this.date.getMonth();
         this.d = new Date(this.year, this.mon);
         this.prevMon = null; // previous month
-
+        this.keeper = {};
     }
 
     build() {
+
+        /**
+         * provide able to switch between months
+         */
 
         if (arguments[0] === 'left') {
             this.mon = this.mon - 1;
@@ -29,15 +33,17 @@ class Calendar {
 
         let table = '<table><tr><th>MO</th><th>TU</th><th>WE</th><th>TH</th><th>FR</th><th>SA</th><th>SU</th></tr><tr>';
 
-        // spaces for the first row
-        // from Monday till the first day of the month
-        // * * * 1  2  3  4
+        /**
+         * makes unavailable dates of another months in the stast of the calendar
+         */
         for (let i = 0; i < this.getDay(this.d); i++) {
             this.prevMon = new Date(this.year, this.mon, -this.getDay(this.d) + 1 + i);
             table += '<td class="muted unavailable">' + this.prevMon.getDate() + '</td>';
         }
 
-        // <td> with actual dates
+        /**
+         * <td> with actual dates
+         * */
         while (this.d.getMonth() == this.mon) {
 
             if (this.d.getDate() === this.date.getDate()) {
@@ -53,8 +59,10 @@ class Calendar {
             this.d.setDate(this.d.getDate() + 1);
         }
 
-        // add spaces after last days of month for the last row
-        // 29 30 31 * * * *
+        /**
+         * makes unavailable dates of another months in the end of the calendar
+         */
+
         if (this.getDay(this.d) != 0) {
             for (let i = this.getDay(this.d); i < 7; i++) {
                 table += '<td class="muted unavailable">' + this.d.getDate() + '</td>';
@@ -62,7 +70,9 @@ class Calendar {
             }
         }
 
-        // close the table
+        /**
+         *  close the table
+         */
         table += '</tr></table>';
 
 
@@ -79,7 +89,24 @@ class Calendar {
         this.elem.appendChild(nav);
         this.elem.appendChild(cal);
 
+        /**
+         * Keep swithed box
+         */
+
+        if (this.year == this.keeper.year && this.mon == this.keeper.mon) {
+            let td = document.getElementsByTagName('td');
+
+            for (let i = 0; i < td.length; i++) {
+
+                if (!td[i].classList.contains('ununavailable') && td[i].innerHTML.match(/\d+/)[0] == this.keeper.date) {
+                    td[i].style.background = 'blue';
+                }
+            }
+        }
+
         //*****Events block */
+
+        let that = this;
 
         cal.firstChild.addEventListener('mousedown', function(event) {
             let target = event.target;
@@ -93,10 +120,13 @@ class Calendar {
 
             if (!target.classList.contains('unavailable') && target.tagName !== 'TH') {
                 target.style.background = 'blue';
+                that.keeper = {
+                    'year': that.year,
+                    'mon': that.mon,
+                    'date': target.innerHTML.match(/\d+/)[0] // get only number from innerHTML
+                };
             }
         }, false);
-
-        let that = this;
 
         document.getElementsByClassName('btn-left')[0].addEventListener('click', function() {
             that.handleSlide('left');
@@ -129,20 +159,3 @@ class Calendar {
 const calendar = new Calendar('root');
 
 calendar.build();
-
-// const table = document.getElementsByTagName('table')[0];
-
-// table.addEventListener('mousedown', function(event) {
-//     let target = event.target;
-
-//     let td = document.querySelectorAll('td');
-
-//     for (let i = 0; i < td.length; i++) {
-//         td[i].style.background = 'none';
-//     }
-//     document.getElementsByClassName('today')[0].style.background = 'red';
-
-//     if (!target.classList.contains('unavailable')) {
-//         target.style.background = 'blue';
-//     }
-// }, false)
