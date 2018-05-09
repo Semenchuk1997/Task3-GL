@@ -89,14 +89,19 @@ class Calendar {
 
         let nav = document.createElement('div');
         let cal = document.createElement('div');
+        let run = document.createElement('button');
 
         let mons = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
         nav.classList.add('nav');
         nav.innerHTML = '<button class="btn btn-left">left</button><span class="current">' + mons[this.mon] + ', ' + this.year + '</span><button class="btn btn-right">Right</button>';
         cal.innerHTML = table;
+        run.className = 'run';
+        run.innerHTML = 'run';
+
         this.elem.appendChild(nav);
         this.elem.appendChild(cal);
+        this.elem.appendChild(run);
 
         /**
          * Keep selected box
