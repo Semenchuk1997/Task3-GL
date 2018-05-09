@@ -5,9 +5,6 @@ class Calendar {
         this.year = this.date.getFullYear();
         this.mon = this.date.getMonth();
         this.d = new Date(this.year, this.mon);
-        this.today = document.getElementsByClassName('today')[0];
-        this.left = document.getElementsByClassName('btn-left')[0];
-        this.right = document.getElementsByClassName('btn-right')[0]
         this.prevMon = null; // previous month
         this.keeper = {};
     }
@@ -122,7 +119,7 @@ class Calendar {
          * selecting box
          */
 
-        cal.firstChild.addEventListener('mousedown', function(event) {
+        cal.firstChild.addEventListener('mousedown', (event) => {
             let target = event.target;
 
             let td = document.getElementsByTagName('td'),
@@ -132,7 +129,7 @@ class Calendar {
                 td[i].style.background = 'none';
             }
 
-            this.today.style.background = 'red';
+            document.getElementsByClassName('today')[0].style.background = 'red';
 
             if (!target.classList.contains('unavailable') && target.tagName !== 'TH') {
                 target.style.background = 'blue';
@@ -145,11 +142,11 @@ class Calendar {
 
         }, false);
 
-        this.left.addEventListener('click', function() {
+        document.getElementsByClassName('btn-left')[0].addEventListener('click', () => {
             that.handleSlide('left');
         }, false);
 
-        this.right.addEventListener('click', function() {
+        document.getElementsByClassName('btn-right')[0].addEventListener('click', () => {
             that.handleSlide('right');
         }, false);
     }
