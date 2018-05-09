@@ -8,6 +8,7 @@ class Calendar {
         this.prevMon = null; // previous month
         this.keeper = {};
         this.historyArr = [];
+        this.wrap = null; // !!!!!!!!!!!??????????????
     }
 
     build() {
@@ -87,6 +88,10 @@ class Calendar {
          * Build DOM
          */
 
+        this.wrap = document.createElement('div');
+        this.wrap.className = 'Calwrapper'
+        this.elem.appendChild(this.wrap);
+
         let nav = document.createElement('div');
         let cal = document.createElement('div');
         let run = document.createElement('button');
@@ -99,9 +104,9 @@ class Calendar {
         run.className = 'run';
         run.innerHTML = 'run';
 
-        this.elem.appendChild(nav);
-        this.elem.appendChild(cal);
-        this.elem.appendChild(run);
+        this.wrap.appendChild(nav);
+        this.wrap.appendChild(cal);
+        this.wrap.appendChild(run);
 
         /**
          * Keep selected box
@@ -132,11 +137,15 @@ class Calendar {
             that.selectBox(target);
         }, false);
 
-        document.getElementsByClassName('btn-left')[0].addEventListener('click', () => {
+        document.getElementsByClassName('btn-left')[0].addEventListener('click', (event) => {
+            // let target = event.target;
+            // that.pushToHistory(event.target);
             that.handleSlide('left');
         }, false);
 
-        document.getElementsByClassName('btn-right')[0].addEventListener('click', () => {
+        document.getElementsByClassName('btn-right')[0].addEventListener('click', (event) => {
+            // let target = event.target;
+            // that.pushToHistory(event.target);
             that.handleSlide('right');
         }, false);
 
@@ -146,20 +155,20 @@ class Calendar {
          */
         let i = 0,
             time = null;
+
         run.addEventListener('click', () => {
-            if (history.state == null) {
-                clearInterval(time);
+            if (i >= this.historyArr.length) {
+                clearTimeout(time);
             } else {
-                clearInterval(time);
-                history.back();
+                clearTimeout(time);
+                //history.back();
                 this.showHistory(i++);
-                time = setInterval(() => {
+                time = setTimeout(() => {
                     run.click();
                 }, 1000);
             }
         }, false);
     }
-
 
     /**
      * get day number from 0 (monday) to 6 (sunday)
@@ -205,17 +214,14 @@ class Calendar {
      * @param {string} side
      */
     handleSlide(side) {
-        while (this.elem.firstChild) {
-            this.elem.removeChild(this.elem.firstChild);
-        }
-
+        this.elem.removeChild(this.elem.firstChild); //!!!!!!!!!!!!!!!!!!!!!!!!!!!1  this.elem.lastChild.hidden = true;
         this.build(side);
     }
 
     pushToHistory(target) {
         target.setAttribute('data-id', Date.now());
         let id = target.getAttribute('data-id');
-        history.pushState({ id }, null, `./selected=${id}`);
+        //history.pushState({ id }, null, `./selected=${id}`);
         this.historyArr.push(id);
     }
 
