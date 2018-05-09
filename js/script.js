@@ -126,7 +126,6 @@ class Calendar {
         /**
          * selecting box
          */
-
         cal.firstChild.addEventListener('mousedown', (event) => {
             let target = event.target;
             that.pushToHistory(event.target);
@@ -141,6 +140,10 @@ class Calendar {
             that.handleSlide('right');
         }, false);
 
+
+        /**
+         * run movie
+         */
         let i = 0,
             time = null;
         run.addEventListener('click', () => {
@@ -155,8 +158,6 @@ class Calendar {
                 }, 1000);
             }
         }, false);
-
-        // history.replaceState({ id: null }, 'Default state', './');
     }
 
 
