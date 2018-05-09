@@ -105,7 +105,7 @@ class Calendar {
 
             for (let i = 0; i < length; i++) {
 
-                if (!td[i].classList.contains('ununavailable') && td[i].innerHTML.match(/\d+/)[0] == this.keeper.date) {
+                if (!td[i].classList.contains('unavailable') && td[i].innerHTML.match(/\d+/)[0] == this.keeper.date) {
                     td[i].style.background = 'blue';
                 }
             }
@@ -121,25 +121,7 @@ class Calendar {
 
         cal.firstChild.addEventListener('mousedown', (event) => {
             let target = event.target;
-
-            let td = document.getElementsByTagName('td'),
-                length = td.length;
-
-            for (let i = 0; i < length; i++) {
-                td[i].style.background = 'none';
-            }
-
-            document.getElementsByClassName('today')[0].style.background = 'red';
-
-            if (!target.classList.contains('unavailable') && target.tagName !== 'TH') {
-                target.style.background = 'blue';
-                that.keeper = {
-                    'year': that.year,
-                    'mon': that.mon,
-                    'date': target.innerHTML.match(/\d+/)[0] // get only number from innerHTML
-                };
-            }
-
+            that.selectBox(target);
         }, false);
 
         document.getElementsByClassName('btn-left')[0].addEventListener('click', () => {
@@ -154,7 +136,7 @@ class Calendar {
 
     /**
      * get day number from 0 (monday) to 6 (sunday)
-     * @param {date} date
+     * @param {Date} date
      */
     getDay(date) {
         let day = date.getDay();
@@ -164,6 +146,31 @@ class Calendar {
         }
 
         return day - 1;
+    }
+
+    /**
+     *
+     * @param {HTMLElement} target
+     */
+    selectBox(target) {
+
+        let td = document.getElementsByTagName('td'),
+            length = td.length;
+
+        for (let i = 0; i < length; i++) {
+            td[i].style.background = 'none';
+        }
+
+        document.getElementsByClassName('today')[0].style.background = 'red';
+
+        if (!target.classList.contains('unavailable') && target.tagName !== 'TH') {
+            target.style.background = 'blue';
+            this.keeper = {
+                'year': this.year,
+                'mon': this.mon,
+                'date': target.innerHTML.match(/\d+/)[0] // get only number from innerHTML
+            };
+        }
     }
 
     /**
