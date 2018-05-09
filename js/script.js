@@ -141,10 +141,20 @@ class Calendar {
             that.handleSlide('right');
         }, false);
 
-        let i = 0;
-        window.addEventListener('popstate', () => {
-            this.showHistory(i++);
-        });
+        let i = 0,
+            time = null;
+        run.addEventListener('click', () => {
+            if (history.state == null) {
+                clearInterval(time);
+            } else {
+                clearInterval(time);
+                history.back();
+                this.showHistory(i++);
+                time = setInterval(() => {
+                    run.click();
+                }, 1000);
+            }
+        }, false);
 
         // history.replaceState({ id: null }, 'Default state', './');
     }
