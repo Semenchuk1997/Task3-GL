@@ -32,7 +32,7 @@ th {
 }
 
 .today {
-    background: red;
+    background: #ccc;
 }
 
 .muted {
@@ -55,4 +55,10 @@ th {
 .current {
     color: #fff;
     margin-left: 25%;
+}
+
+.run {
+    margin-top: 20px;
+    padding: 20px 30px;
+    text-transform: uppercase;
 }

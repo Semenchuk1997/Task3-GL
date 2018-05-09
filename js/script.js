@@ -50,8 +50,10 @@ class Calendar {
          * */
         while (this.d.getMonth() == this.mon) {
 
-            if (this.d.getDate() === this.date.getDate()) {
-                table += '<td class="today">' + this.d.getDate() + '<br>' + 'today' + '</td>'
+            if (this.d.getDate() === this.date.getDate() && this.d.getMonth() === this.date.getMonth()) {
+                table += '<td class="today">' + this.d.getDate() + '<br>' + 'today' + '</td>';
+            } else if (this.d.getDate() === this.date.getDate()) {
+                table += '<td class="today">' + this.d.getDate() + '</td>';
             } else {
                 table += '<td>' + this.d.getDate() + '</td>';
             }
@@ -161,7 +163,7 @@ class Calendar {
             td[i].style.background = 'none';
         }
 
-        document.getElementsByClassName('today')[0].style.background = 'red';
+        document.getElementsByClassName('today')[0].style.background = '#ccc';
 
         if (!target.classList.contains('unavailable') && target.tagName !== 'TH') {
             target.style.background = 'blue';
