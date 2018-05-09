@@ -135,13 +135,20 @@ class Calendar {
             that.selectBox(target);
         }, false);
 
-        document.getElementsByClassName('btn-left')[0].addEventListener('click', (event) => {
+        // let left = document.getElementsByClassName('btn-left')[document.getElementsByClassName('btn-left').lenght - 1],
+        //     right = document.getElementsByClassName('btn-right')[document.getElementsByClassName('btn-right').lenght - 1];
+
+        let left = document.getElementsByClassName('btn-left'),
+            right = document.getElementsByClassName('btn-right');
+
+
+        left[left.length - 1].addEventListener('click', (event) => {
             // let target = event.target;
             // that.pushToHistory(event.target);
             that.handleSlide('left');
         }, false);
 
-        document.getElementsByClassName('btn-right')[0].addEventListener('click', (event) => {
+        right[right.length - 1].addEventListener('click', (event) => {
             // let target = event.target;
             // that.pushToHistory(event.target);
             that.handleSlide('right');
@@ -212,7 +219,7 @@ class Calendar {
      * @param {string} side
      */
     handleSlide(side) {
-        this.elem.removeChild(this.elem.firstChild);
+        this.elem.lastChild.hidden = true;
         this.build(side);
     }
 
