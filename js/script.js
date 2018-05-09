@@ -8,7 +8,6 @@ class Calendar {
         this.prevMon = null; // previous month
         this.keeper = {};
         this.historyArr = [];
-        this.wrap = null; // !!!!!!!!!!!??????????????
     }
 
     build() {
@@ -16,7 +15,6 @@ class Calendar {
         /**
          * provide able to switch between months
          */
-
         if (arguments[0] === 'left') {
             this.mon = this.mon - 1;
             if (this.mon < 0) {
@@ -88,9 +86,9 @@ class Calendar {
          * Build DOM
          */
 
-        this.wrap = document.createElement('div');
-        this.wrap.className = 'Calwrapper'
-        this.elem.appendChild(this.wrap);
+        let wrap = document.createElement('div');
+        wrap.className = 'сalWrapper';
+        this.elem.appendChild(wrap);
 
         let nav = document.createElement('div');
         let cal = document.createElement('div');
@@ -98,15 +96,15 @@ class Calendar {
 
         let mons = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-        nav.classList.add('nav');
+        nav.className = 'nav';
         nav.innerHTML = '<button class="btn btn-left">left</button><span class="current">' + mons[this.mon] + ', ' + this.year + '</span><button class="btn btn-right">Right</button>';
         cal.innerHTML = table;
         run.className = 'run';
         run.innerHTML = 'run';
 
-        this.wrap.appendChild(nav);
-        this.wrap.appendChild(cal);
-        this.wrap.appendChild(run);
+        wrap.appendChild(nav);
+        wrap.appendChild(cal);
+        wrap.appendChild(run);
 
         /**
          * Keep selected box
@@ -214,7 +212,7 @@ class Calendar {
      * @param {string} side
      */
     handleSlide(side) {
-        this.elem.removeChild(this.elem.firstChild); //!!!!!!!!!!!!!!!!!!!!!!!!!!!1  this.elem.lastChild.hidden = true;
+        this.elem.removeChild(this.elem.firstChild);
         this.build(side);
     }
 
