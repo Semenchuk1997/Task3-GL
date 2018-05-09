@@ -7,6 +7,7 @@ class Calendar {
         this.d = new Date(this.year, this.mon);
         this.prevMon = null; // previous month
         this.keeper = {};
+        this.historyArr = [];
     }
 
     build() {
@@ -123,6 +124,7 @@ class Calendar {
 
         cal.firstChild.addEventListener('mousedown', (event) => {
             let target = event.target;
+            that.pushToHistory(event.target);
             that.selectBox(target);
         }, false);
 
@@ -133,6 +135,13 @@ class Calendar {
         document.getElementsByClassName('btn-right')[0].addEventListener('click', () => {
             that.handleSlide('right');
         }, false);
+
+        let i = 0;
+        window.addEventListener('popstate', () => {
+            this.showHistory(i++);
+        });
+
+        // history.replaceState({ id: null }, 'Default state', './');
     }
 
 
@@ -185,6 +194,20 @@ class Calendar {
         }
 
         this.build(side);
+    }
+
+    pushToHistory(target) {
+        target.setAttribute('data-id', Date.now());
+        let id = target.getAttribute('data-id');
+        history.pushState({ id }, null, `./selected=${id}`);
+        this.historyArr.push(id);
+    }
+
+    showHistory(i) {
+        let id = this.historyArr[i];
+        let attr = '[data-id="' + id + '"]';
+        let elem = document.querySelector(attr);
+        this.selectBox(elem);
     }
 }
 
