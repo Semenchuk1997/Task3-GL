@@ -252,19 +252,30 @@ class Calendar {
 
     runHandleSlide(target, side) {
         side = side.substring(4);
-        let wraps = this.elem.children,
-            i = 0;
 
-        while (wraps[i] != target) {
-            if (side === 'right') {
-                wraps[i + 1].hidden = false;
-                wraps[i].hidden = true;
-            } else if (side === 'left') {
-                wraps[i - 1] = false;
-                wraps[i].hidden = true;
-            }
-            ++i;
+        let wrap = target.parentElement.parentElement;
+
+        if (side == 'right') {
+            wrap.nextElementSibling.hidden = false;
+            wrap.hidden = true;
+        } else if (side == 'left') {
+            wrap.previousElementSibling.hidden = false;
+            wrap.hidden = true;
         }
+
+        // let wraps = this.elem.children,
+        //     i = 0;
+
+        // while (wraps[i] != target) {
+        // if (side === 'right') {
+        //     wraps[i + 1].hidden = false;
+        //     wraps[i].hidden = true;
+        // } else if (side === 'left') {
+        //     wraps[i - 1] = false;
+        //     wraps[i].hidden = true;
+        // }
+        //     ++i;
+        // }
     }
 
     pushToHistory(target) {
