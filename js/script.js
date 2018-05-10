@@ -112,7 +112,7 @@ class Calendar {
 
         if (this.year == this.keeper.year && this.mon == this.keeper.mon) {
 
-            let td = document.getElementsByTagName('td'), //******************************************************* */
+            let td = document.getElementsByTagName('td'),
                 length = td.length;
 
             for (let i = 0; i < length; i++) {
@@ -130,7 +130,7 @@ class Calendar {
         /**
          * selecting box
          */
-        cal.firstChild.addEventListener('mousedown', (event) => { //mousedown
+        cal.firstChild.addEventListener('mousedown', (event) => {
             let target = event.target;
             that.pushToHistory(event.target);
             that.selectBox(target);
@@ -160,19 +160,6 @@ class Calendar {
             time = null,
             attr = null;
 
-        // run.addEventListener('click', () => {
-        //     if (i >= this.historyArr.length) {
-        //         clearTimeout(time);
-        //     } else {
-        //         clearTimeout(time);
-        //         //history.back();
-        //         this.showHistory(i++);
-        //         time = setTimeout(() => {
-        //             run.click();
-        //         }, 1000);
-        //     }
-        // }, false);
-
         run.addEventListener('click', () => {
             this.elem.lastChild.hidden = true;
             this.elem.firstChild.hidden = false;
@@ -182,7 +169,6 @@ class Calendar {
                     clearInterval(time);
                 } else {
                     attr = '[data-id="' + this.historyArr[i++] + '"]';
-                    // document.querySelector(attr).click();
                     if (document.querySelector(attr).tagName == 'TD') {
                         document.querySelector(attr).addEventListener('click', (event) => {
                             that.selectBox(event.target);
@@ -191,7 +177,7 @@ class Calendar {
                     } else if (document.querySelector(attr).tagName == 'BUTTON') {
                         let side = document.querySelector(attr).className;
                         document.querySelector(attr).addEventListener('click', (event) => {
-                            that.runHandleSlide(event.target, side);
+                            that.runHandleSlide(event.target);
                         });
                         document.querySelector(attr).click();
                     }
@@ -220,7 +206,7 @@ class Calendar {
      */
     selectBox(target) {
 
-        let td = document.getElementsByTagName('td'), //************************************************************** */
+        let td = document.getElementsByTagName('td'),
             length = td.length;
 
         for (let i = 0; i < length; i++) {
@@ -229,7 +215,9 @@ class Calendar {
 
         let today = document.querySelectorAll('.today');
 
-        today[today.length - 1].style.background = '#ccc';
+        for (let i = 0; i < today.length; i++) {
+            today[i].style.background = '#ccc';
+        }
 
         if (!target.classList.contains('unavailable') && target.tagName !== 'TH') {
             target.style.background = 'blue';
@@ -250,38 +238,16 @@ class Calendar {
         this.build(side);
     }
 
-    runHandleSlide(target, side) {
-        side = side.substring(4);
-
+    runHandleSlide(target) {
         let wrap = target.parentElement.parentElement;
 
-        if (side == 'right') {
-            wrap.nextElementSibling.hidden = false;
-            wrap.hidden = true;
-        } else if (side == 'left') {
-            wrap.previousElementSibling.hidden = false;
-            wrap.hidden = true;
-        }
-
-        // let wraps = this.elem.children,
-        //     i = 0;
-
-        // while (wraps[i] != target) {
-        // if (side === 'right') {
-        //     wraps[i + 1].hidden = false;
-        //     wraps[i].hidden = true;
-        // } else if (side === 'left') {
-        //     wraps[i - 1] = false;
-        //     wraps[i].hidden = true;
-        // }
-        //     ++i;
-        // }
+        wrap.nextElementSibling.hidden = false;
+        wrap.hidden = true;
     }
 
     pushToHistory(target) {
         target.setAttribute('data-id', Date.now());
         let id = target.getAttribute('data-id');
-        //history.pushState({ id }, null, `./selected=${id}`);
         this.historyArr.push(id);
     }
 
