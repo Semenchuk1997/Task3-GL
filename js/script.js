@@ -97,7 +97,7 @@ class Calendar {
         let mons = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
         nav.className = 'nav';
-        nav.innerHTML = '<button class="btn btn-left">left</button><span class="current">' + mons[this.mon] + ', ' + this.year + '</span><button class="btn btn-right">Right</button>';
+        nav.innerHTML = '<button class="btn left">left</button><span class="current">' + mons[this.mon] + ', ' + this.year + '</span><button class="btn right">right</button>';
         cal.innerHTML = table;
         run.className = 'run';
         run.innerHTML = 'run';
@@ -111,7 +111,8 @@ class Calendar {
          */
 
         if (this.year == this.keeper.year && this.mon == this.keeper.mon) {
-            let td = document.getElementsByTagName('td'),
+
+            let td = document.getElementsByTagName('td'), //******************************************************* */
                 length = td.length;
 
             for (let i = 0; i < length; i++) {
@@ -129,28 +130,25 @@ class Calendar {
         /**
          * selecting box
          */
-        cal.firstChild.addEventListener('mousedown', (event) => {
+        cal.firstChild.addEventListener('mousedown', (event) => { //mousedown
             let target = event.target;
             that.pushToHistory(event.target);
             that.selectBox(target);
         }, false);
 
-        // let left = document.getElementsByClassName('btn-left')[document.getElementsByClassName('btn-left').lenght - 1],
-        //     right = document.getElementsByClassName('btn-right')[document.getElementsByClassName('btn-right').lenght - 1];
-
-        let left = document.getElementsByClassName('btn-left'),
-            right = document.getElementsByClassName('btn-right');
+        let left = document.getElementsByClassName('left'),
+            right = document.getElementsByClassName('right');
 
 
-        left[left.length - 1].addEventListener('click', (event) => {
-            // let target = event.target;
-            // that.pushToHistory(event.target);
+        left[left.length - 1].addEventListener('mousedown', (event) => {
+            let target = event.target;
+            that.pushToHistory(event.target);
             that.handleSlide('left');
         }, false);
 
-        right[right.length - 1].addEventListener('click', (event) => {
-            // let target = event.target;
-            // that.pushToHistory(event.target);
+        right[right.length - 1].addEventListener('mousedown', (event) => {
+            let target = event.target;
+            that.pushToHistory(event.target);
             that.handleSlide('right');
         }, false);
 
@@ -159,20 +157,47 @@ class Calendar {
          * run movie
          */
         let i = 0,
-            time = null;
+            time = null,
+            attr = null;
+
+        // run.addEventListener('click', () => {
+        //     if (i >= this.historyArr.length) {
+        //         clearTimeout(time);
+        //     } else {
+        //         clearTimeout(time);
+        //         //history.back();
+        //         this.showHistory(i++);
+        //         time = setTimeout(() => {
+        //             run.click();
+        //         }, 1000);
+        //     }
+        // }, false);
 
         run.addEventListener('click', () => {
-            if (i >= this.historyArr.length) {
-                clearTimeout(time);
-            } else {
-                clearTimeout(time);
-                //history.back();
-                this.showHistory(i++);
-                time = setTimeout(() => {
-                    run.click();
-                }, 1000);
-            }
-        }, false);
+            this.elem.lastChild.hidden = true;
+            this.elem.firstChild.hidden = false;
+
+            time = setInterval(() => {
+                if (i >= this.historyArr.length) {
+                    clearInterval(time);
+                } else {
+                    attr = '[data-id="' + this.historyArr[i++] + '"]';
+                    // document.querySelector(attr).click();
+                    if (document.querySelector(attr).tagName == 'TD') {
+                        document.querySelector(attr).addEventListener('click', (event) => {
+                            that.selectBox(event.target);
+                        });
+                        document.querySelector(attr).click();
+                    } else if (document.querySelector(attr).tagName == 'BUTTON') {
+                        let side = document.querySelector(attr).className;
+                        document.querySelector(attr).addEventListener('click', (event) => {
+                            that.runHandleSlide(event.target, side);
+                        });
+                        document.querySelector(attr).click();
+                    }
+                }
+            }, 1000);
+        });
     }
 
     /**
@@ -195,14 +220,16 @@ class Calendar {
      */
     selectBox(target) {
 
-        let td = document.getElementsByTagName('td'),
+        let td = document.getElementsByTagName('td'), //************************************************************** */
             length = td.length;
 
         for (let i = 0; i < length; i++) {
             td[i].style.background = 'none';
         }
 
-        document.getElementsByClassName('today')[0].style.background = '#ccc';
+        let today = document.querySelectorAll('.today');
+
+        today[today.length - 1].style.background = '#ccc';
 
         if (!target.classList.contains('unavailable') && target.tagName !== 'TH') {
             target.style.background = 'blue';
@@ -221,6 +248,23 @@ class Calendar {
     handleSlide(side) {
         this.elem.lastChild.hidden = true;
         this.build(side);
+    }
+
+    runHandleSlide(target, side) {
+        side = side.substring(4);
+        let wraps = this.elem.children,
+            i = 0;
+
+        while (wraps[i] != target) {
+            if (side === 'right') {
+                wraps[i + 1].hidden = false;
+                wraps[i].hidden = true;
+            } else if (side === 'left') {
+                wraps[i - 1] = false;
+                wraps[i].hidden = true;
+            }
+            ++i;
+        }
     }
 
     pushToHistory(target) {
